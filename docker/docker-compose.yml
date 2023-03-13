@@ -1,0 +1,47 @@
+version: '3.3'
+services:
+    database:
+        image: mysql
+        restart: always
+        command: ["--default-authentication-plugin=mysql_native_password"]
+        env_file:
+            - back.dev.env
+        networks:
+            - database_net
+    php:
+        build:
+            context: ./php
+            dockerfile: Dockerfile
+            args:
+                - JWT_PASSPHRASE=$JWT_PASSPHRASE
+                - JWT_SECRET_KEY=$JWT_SECRET_KEY
+                - JWT_PUBLIC_KEY=$JWT_PUBLIC_KEY
+        restart: always
+        env_file:
+            - back.dev.env
+        depends_on:
+            - database
+        networks:
+            - database_net
+            - php_net
+        volumes:
+            - ./api:/var/www/api:cached
+    server:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile.dev
+        restart: always
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - php
+        networks:
+            - php_net
+        volumes:
+            - ./api:/var/www/api:cached
+            - /etc/letsencrypt:/etc/letsencrypt:cached
+
+networks:
+    database_net:
+    php_net:
