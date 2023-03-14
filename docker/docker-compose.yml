@@ -8,6 +8,8 @@ services:
             - back.dev.env
         networks:
             - database_net
+        volumes:
+            - db_volume:/var/lib/mysql
     php:
         build:
             context: ./php
@@ -26,6 +28,19 @@ services:
             - php_net
         volumes:
             - ./api:/var/www/api:cached
+            - db_volume:/var/lib/mysql
+    front:
+        build:
+            context: ./front
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - "3000:3000"
+        networks:
+            - front_net
+        volumes:
+            - ./front/public:/app/public:cached
+            - ./front/src:/app/src:cached
     server:
         build:
             context: ./nginx
@@ -36,8 +51,10 @@ services:
             - "443:443"
         depends_on:
             - php
+            - front
         networks:
             - php_net
+            - front_net
         volumes:
             - ./api:/var/www/api:cached
             - /etc/letsencrypt:/etc/letsencrypt:cached
@@ -45,3 +62,7 @@ services:
 networks:
     database_net:
     php_net:
+    front_net:
+
+volumes:
+    db_volume:
