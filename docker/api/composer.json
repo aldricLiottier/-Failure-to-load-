@@ -7,14 +7,19 @@
         "php": ">=8.0.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "alcaeus/mongo-php-adapter": "*",
+        "doctrine/doctrine-bundle": "^2.9",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/mongodb-odm": "*",
+        "doctrine/mongodb-odm-bundle": "*",
+        "doctrine/orm": "^2.14",
+        "easycorp/easyadmin-bundle": "^4.6",
         "symfony/console": "6.0.*",
         "symfony/dotenv": "6.0.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.0.*",
         "symfony/runtime": "6.0.*",
         "symfony/yaml": "6.0.*"
-    },
-    "require-dev": {
     },
     "config": {
         "allow-plugins": {
@@ -63,8 +68,11 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": "true",
             "require": "6.0.*"
         }
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.48"
     }
 }
