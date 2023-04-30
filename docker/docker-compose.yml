@@ -34,10 +34,10 @@ services:
             context: ./front
             dockerfile: Dockerfile
         restart: always
-        ports:
-            - "3000:3000"
         networks:
             - front_net
+        environment:
+            - NODE_ENV=production
         volumes:
             - ./front/public:/app/public:cached
             - ./front/src:/app/src:cached
@@ -49,6 +49,7 @@ services:
         ports:
             - "80:80"
             - "443:443"
+            - "3000:3000"
         depends_on:
             - php
             - front

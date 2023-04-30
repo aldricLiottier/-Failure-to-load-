@@ -21,3 +21,4 @@ CMD ["nginx"]
 #   Expose server ports
 EXPOSE 80
 EXPOSE 443
+EXPOSE 3000
