@@ -30,11 +30,12 @@ export default function Home() {
 
   return (
     <div>
+
         <LoadingButton onClick={getArticles} text='Refresh'></LoadingButton>
         {(sessionStorage.getItem('token')) ? <button onClick={displayNotification}>Activer les notifications</button> : <></>}
-        {articles.forEach(article => {
+        {/* {articles.forEach(article => {
           return <button onClick={navigate('/article/' + article.id.toString())}></button>;
-        })}
+        })} */}
     </div>
   );
 }
