@@ -1,0 +1,23 @@
+FROM alpine:3.12
+
+#   Install NGINX
+RUN apk add --update --no-cache nginx
+
+#   Copy config files
+COPY nginx.conf /etc/nginx/
+COPY symfony.conf /etc/nginx/conf.d/
+COPY upstream.conf /etc/nginx/conf.d/
+
+# COPY letsencrypt/ /etc/letsencrypt/
+
+#   Add NGINX user
+RUN adduser -D -g '' -G www-data www-data
+RUN chown -R www-data:www-data /var/lib/nginx
+
+
+#   Run nginx
+CMD ["nginx"]
+
+#   Expose server ports
+EXPOSE 80
+EXPOSE 443

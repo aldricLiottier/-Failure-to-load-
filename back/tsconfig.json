@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Node",
+    "sourceMap": true,
+    "outDir": "build",
+    "baseUrl": "./src",
+    "declarationMap": true,
+    "tsBuildInfoFile": "./build/tsbuildinfo",
+    "composite": true,
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

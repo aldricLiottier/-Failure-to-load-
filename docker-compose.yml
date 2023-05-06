@@ -1,0 +1,67 @@
+version: '3.3'
+services:
+    database:
+        image: postgres
+        restart: always
+        networks:
+            - database_net
+        volumes:
+            - db_volume:/var/lib/postgresql/data:cached
+        environment:
+            POSTGRES_PASSWORD: docker
+            POSTGRES_USER: postgres
+            POSTGRES_DB: failure
+    front:
+        build:
+            context: ./front
+            dockerfile: Dockerfile
+        restart: always
+        networks:
+            - front_net
+        volumes:
+            - ./front/public:/app/public:cached
+            - ./front/src:/app/src:cached
+    back:
+        build:
+            context: ./back
+            dockerfile: Dockerfile.dev
+        restart: always
+        depends_on:
+            - database
+        networks:
+            - database_net
+            - back_net
+        volumes:
+            - ./back:/app:cached
+    server:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile.dev
+        restart: always
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - back
+            - front
+        networks:
+            - back_net
+            - front_net
+        volumes:
+            - ./api:/var/www/api:cached
+            - /etc/letsencrypt:/etc/letsencrypt:cached
+    adminer:
+        image: adminer
+        restart: always
+        networks:
+            - database_net
+        ports:
+            - 8080:8080
+
+networks:
+    database_net:
+    back_net:
+    front_net:
+
+volumes:
+    db_volume:
